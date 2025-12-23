@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KEN — DEN STILLE ØDELEGGEREN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #001538;          /* rgb(0,21,56) — hovedfarge */
+      --accent: #C1272D;           /* rød — varsler, knapper */
+      --accent-light: #F8E8E8;     /* lys rød highlight */
+      --text-primary: #1A1A1A;     /* sterke overskrifter */
+      --text: #4D4D4D;             /* brødtekst */
+      --card-bg: #F5F5F5;          /* lys grå cards */
+      --border: #E6E6E6;           /* skillelinjer */
+      --bg: #FFFFFF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      padding: 0 10px 0px 10px;
+    }
+
+    /* FLYVENDE KEN-BILDE — SIRKEL + ANIMASJON */
+    .ken-flyer {
+      position: fixed;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(0, 21, 56, 0.3);
+      z-index: 999;
+      opacity: 0.9;
+    }
+
+    .ken-flyer:nth-child(1) {
+      animation: float-diagonal 6s ease-in-out infinite;
+    }
+
+    .ken-flyer:nth-child(2) {
+      animation: float-horizontal 8s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    .ken-flyer:nth-child(3) {
+      animation: float-vertical 7s ease-in-out infinite;
+      animation-delay: 2s;
+    }
+
+    .ken-flyer:nth-child(4) {
+      animation: float-circle 10s linear infinite;
+      animation-delay: 0.5s;
+    }
+
+    .ken-flyer:nth-child(5) {
+      animation: float-zigzag 9s ease-in-out infinite;
+      animation-delay: 1.5s;
+    }
+
+    @keyframes float-diagonal {
+      0% { 
+        top: -100px; 
+        right: -100px; 
+        transform: rotate(0deg) scale(0.8);
+      }
+      25% { 
+        top: 25%; 
+        right: 75%; 
+        transform: rotate(90deg) scale(1);
+      }
+      50% { 
+        top: 50%; 
+        right: 50%; 
+        transform: rotate(180deg) scale(1.1);
+      }
+      75% { 
+        top: 75%; 
+        right: 25%; 
+        transform: rotate(270deg) scale(1);
+      }
+      100% { 
+        top: 100%; 
+        right: 100%; 
+        transform: rotate(360deg) scale(0.8);
+      }
+    }
+
+    @keyframes float-horizontal {
+      0% { 
+        top: 15%; 
+        left: -100px; 
+        transform: rotate(-20deg);
+      }
+      50% { 
+        top: 15%; 
+        left: calc(100% + 100px); 
+        transform: rotate(20deg);
+      }
+      100% { 
+        top: 15%; 
+        left: -100px; 
+        transform: rotate(-20deg);
+      }
+    }
+
+    @keyframes float-vertical {
+      0% { 
+        top: -100px; 
+        left: 70%; 
+        transform: rotate(0deg);
+      }
+      50% { 
+        top: calc(100% + 100px); 
+        left: 70%; 
+        transform: rotate(180deg);
+      }
+      100% { 
+        top: -100px; 
+        left: 70%; 
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes float-circle {
+      0% { 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%) rotate(0deg) translateX(200px) rotate(0deg);
+      }
+      100% { 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%) rotate(360deg) translateX(200px) rotate(-360deg);
+      }
+    }
+
+    @keyframes float-zigzag {
+      0% { 
+        top: -100px; 
+        left: 20%; 
+        transform: rotate(0deg);
+      }
+      20% { 
+        top: 20%; 
+        left: 80%; 
+        transform: rotate(72deg);
+      }
+      40% { 
+        top: 40%; 
+        left: 10%; 
+        transform: rotate(144deg);
+      }
+      60% { 
+        top: 60%; 
+        left: 90%; 
+        transform: rotate(216deg);
+      }
+      80% { 
+        top: 80%; 
+        left: 30%; 
+        transform: rotate(288deg);
+      }
+      100% { 
+        top: 100%; 
+        left: 70%; 
+        transform: rotate(360deg);
+      }
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1.8rem 1.5rem 1.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    header .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    header .logo {
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+
+    /* TYPOGRAFI */
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 1.8rem 0 1rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 1.4rem 0 0.75rem;
+    }
+
+    p, li {
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    strong {
+      color: var(--text-primary);
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 1.6rem;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+    }
+
+    /* HIGHLIGHTS */
+    .highlight {
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 30px;
+      margin: 0.5rem 0;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 4px rgba(193, 39, 45, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(193, 39, 45, 0.25);
+    }
+
+    .btn-success {
+      background: #2E7D32;
+      box-shadow: 0 2px 4px rgba(46, 125, 50, 0.15);
+    }
+
+    /* FADE */
+    .fade {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 2.5rem;
+      color: var(--text);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    /* MOBIL */
+    @media (max-width: 480px) {
+      header { padding: 1.4rem 1.25rem 1.2rem; }
+      header h1 { font-size: 1.8rem; }
+      .stats { grid-template-columns: 1fr; }
+      .container { padding: 1.25rem; }
+      .ken-flyer {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    ul {
+      padding-left: 1.25rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* EKSPLOSJON OG ILD */
+    .fire-particle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    @keyframes explode {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      10% { transform: translateX(-10px) rotate(-2deg); }
+      20% { transform: translateX(10px) rotate(2deg); }
+      30% { transform: translateX(-10px) rotate(-2deg); }
+      40% { transform: translateX(10px) rotate(2deg); }
+      50% { transform: translateX(-10px) rotate(-2deg); }
+      60% { transform: translateX(10px) rotate(2deg); }
+      70% { transform: translateX(-10px) rotate(-2deg); }
+      80% { transform: translateX(10px) rotate(2deg); }
+      90% { transform: translateX(-10px) rotate(-2deg); }
+    }
+
+    .burn {
+      animation: burn 2s ease-out forwards;
+    }
+
+    @keyframes burn {
+      0% {
+        filter: brightness(1) contrast(1);
+      }
+      50% {
+        filter: brightness(1.5) contrast(1.2) hue-rotate(20deg);
+      }
+      100% {
+        filter: brightness(0) contrast(0);
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+
+    .flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(255,100,0,0.8) 0%, rgba(255,50,0,0.4) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0;
+      animation: flash 0.5s ease-out;
+    }
+
+    @keyframes flash {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* POPUP DIALOG */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+      animation-delay: 3s;
+    }
+
+    .popup {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(255, 68, 0, 0.5);
+      border: 3px solid #FF4500;
+      transform: scale(0.5);
+      animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      animation-delay: 3s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      to { transform: scale(1); }
+    }
+
+    .popup-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      animation: burn-icon 1s ease-in-out infinite;
+    }
+
+    @keyframes burn-icon {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .popup h2 {
+      color: #FF4500;
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+
+    .popup p {
+      color: #333;
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+
+    .popup-btn {
+      background: #FF4500;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .popup-btn:hover {
+      background: #DC143C;
+      transform: scale(1.05);
+    }
+
+    /* REALISTISK ILD OVERLAY */
+    .fire-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9997;
+      overflow: hidden;
+    }
+
+    .flame {
+      position: absolute;
+      bottom: -50px;
+      width: 100px;
+      height: 200px;
+      background: linear-gradient(to top, 
+        rgba(255, 68, 0, 1) 0%,
+        rgba(255, 140, 0, 0.9) 20%,
+        rgba(255, 215, 0, 0.7) 40%,
+        rgba(255, 255, 0, 0.4) 60%,
+        transparent 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      filter: blur(8px);
+      animation: flicker 0.15s infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    @keyframes flicker {
+      0% { 
+        transform: scaleY(1) scaleX(1) translateY(0);
+        opacity: 1;
+      }
+      50% { 
+        transform: scaleY(1.1) scaleX(0.95) translateY(-10px);
+        opacity: 0.95;
+      }
+      100% { 
+        transform: scaleY(0.95) scaleX(1.05) translateY(-5px);
+        opacity: 0.9;
+      }
+    }
+
+    .flame-large {
+      width: 150px;
+      height: 300px;
+      animation: flicker-large 0.2s infinite alternate, rise 3s ease-out forwards;
+    }
+
+    @keyframes flicker-large {
+      0% { 
+        transform: scaleY(1) scaleX(1) translateY(var(--rise, 0));
+        opacity: 0.95;
+      }
+      50% { 
+        transform: scaleY(1.15) scaleX(0.9) translateY(calc(var(--rise, 0) - 20px));
+        opacity: 0.9;
+      }
+      100% { 
+        transform: scaleY(0.9) scaleX(1.1) translateY(calc(var(--rise, 0) - 10px));
+        opacity: 0.85;
+      }
+    }
+
+    @keyframes rise {
+      0% { --rise: 0px; }
+      100% { --rise: -400px; opacity: 0; }
+    }
+
+    .ember {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, #FFD700, #FF4500);
+      border-radius: 50%;
+      box-shadow: 0 0 10px #FF4500;
+      animation: float-ember 2s ease-out forwards;
+    }
+
+    @keyframes float-ember {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-600px) translateX(var(--drift));
+        opacity: 0;
+      }
+    }
+
+    .heat-wave {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 68, 0, 0.1) 0px,
+        rgba(255, 140, 0, 0.05) 2px,
+        rgba(255, 68, 0, 0.1) 4px
+      );
+      pointer-events: none;
+      z-index: 9996;
+      animation: heat-distortion 0.3s infinite;
+      opacity: 0;
+    }
+
+    @keyframes heat-distortion {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(2px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .smoke {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, rgba(50, 50, 50, 0.4), transparent);
+      border-radius: 50%;
+      filter: blur(15px);
+      animation: smoke-rise 4s ease-out forwards;
+    }
+
+    @keyframes smoke-rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-800px) scale(2.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLYVENDE KEN — FLERE VARIANTER MED ULIKE ANIMASJONER -->
+  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+
+  <header>
+    <h1>KEN — DEN STILLE ØDELEGGEREN</h1>
+    <p class="subtitle">Hvorfor Ken Siva Lie er et dårlig menneske</p>
+  </header>
+
+  <div class="container">
+
+    <section class="fade">
+      <div class="card">
+        <p>
+          Ken jobber ved Norges Bank.<br>
+          Det høres som en vanlig jobb — inntil du skjønner hva det <strong>faktisk</strong> betyr:
+        </p>
+        <p>
+          <strong>Han blir betalt for å gjøre penger verdt mindre.</strong>
+        </p>
+        <p>
+          Ikke med et ran. Ikke med svindel.<br>
+          Nei — med <em>PowerPoint</em>, <em>statistikk</em> og et blikk så rolig at det burde være ulovlig når noen sier <em>“men hva med gull?”</em>
+        </p>
+        <p>
+          Det heter ikke “å skape likviditet”.<br>
+          Det heter <span class="highlight">å fortynne andres livsverk til en tynn, smakløs suppe</span>.
+        </p>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="card">
+        <h2>📉 FAKTA — IKKE MENINGER</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">59 → 89 kr</div>
+            <div class="stat-label">Big Mac</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">98 → 134 kr</div>
+            <div class="stat-label">Øl på Grønland</div>
+          </div>
+        </div>
+        <p>
+          Det er ikke fordi maten er dyrere å lage.<br>
+          Det er ikke fordi boliger er tregere å bygge.
+        </p>
+        <p>
+          Det er fordi <strong>flere tall</strong> har dukket opp — uten at det dukket opp flere burgere, øl eller kvadratmeter.
+        </p>
+        <p>
+          <em>“Men det er for å unngå deflasjon!”</em> — sier Ken.<br>
+          <em>“Bro — deflasjon er når ting blir billigere. Jeg vil ha det.”</em>
+        </p>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="card">
+        <h2>⚙️ HVORDAN DET VIRKER</h2>
+        <h3>1. KEN TRYKKER</h3>
+        <p>
+          Norges Bank “kjøper” statsobligasjoner.<br>
+          <em>Bam.</em> 10 milliarder nye kroner dukker opp — som ikke eksisterte for 5 sekunder siden.
+        </p>
+
+        <h3>2. BANKENE KOPIERER</h3>
+        <p>
+          Med <em>brøkreservebank</em> lager de 9 nye kroner for hver 1 reell krone.<br>
+          1 kr = 10 kr → 10 kr = 100 kr → snart en øl til 500 kr.<br>
+          Og vi kaller det <em>“økonomisk vekst”</em>.
+        </p>
+
+        <h3>3. JEG BETALER</h3>
+        <p>
+          Lønna stiger 3 %. Prisene stiger 4 %.<br>
+          Jeg må jobbe én dag ekstra hver måned bare for å holde meg på samme sted.<br>
+          Og Ken? Han får bonus for <em>“stabil utvikling”</em>.
+        </p>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="card">
+        <h2>🦸‍♂️ KEN SIN “SUPERKRAFT”</h2>
+        <p>
+          Han kan:
+        </p>
+        <ul>
+          <li>Si <strong>“monetær utvidelse”</strong> uten å le.</li>
+          <li>Forstå et diagram med tre akser — og likevel ikke skjønne hvorfor jeg er sint.</li>
+          <li>Sove rolig om natten etter å ha sagt: <em>“Inflasjon er en skjult skatt — men den er nødvendig.”</em></li>
+        </ul>
+        <p>
+          Det er som om Darth Vader sa:<br>
+          <em>“Jeg kvaler deg ikke — jeg optimaliserer oksygentilførselen.”</em><br>
+          Og så spør: <em>“Skal vi ta en kaffe?”</em>
+        </p>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="card">
+        <h2>🎯 SLUTTORD — INGEN UNNSKYLDNING, MEN EN AVTALE</h2>
+        <p>
+          Jeg liker Ken.<br>
+          Jeg vil drikke med Ken.<br>
+          Jeg ville gått i krig for Ken.
+        </p>
+        <p>
+          Men jeg aksepterer <strong>IKKE</strong> at han jobber et sted hvor suksess defineres som:
+        </p>
+        <p style="font-style:italic; margin:1rem 0;">
+          <span class="highlight">“Å ødelegge for andre — men så mye at de ikke merker det før det er for sent.”</span>
+        </p>
+        <p>
+          Så her er betingelsene:
+        </p>
+        <ul>
+          <li>✅ Neste gang vi møtes — kjøper Ken alle øl.</li>
+          <li>✅ Han må forklare <em>“hvorfor ikke gullstandard?”</em> — uten å bruke ordet <em>“fiasko”</em>.</li>
+          <li>✅ 1. juni 2026: En Big Mac under 100 kr? → Da tilgir jeg ham.</li>
+        </ul>
+      </div>
+    </section>
+
+    <button id="btn" class="btn fade">✅ Greit. Jeg betaler.</button>
+
+  </div>
+
+  <footer>
+    <p>23. desember 2025</p>
+    <p><em>Ingen pengepolitikere ble skadet. Men kjøpekraften deres ble — ironisk nok — forringet under lesing.</em></p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+      document.getElementById('btn').addEventListener('click', function() {
+        // Disable button
+        this.disabled = true;
+        
+        // Start risteffekt
+        document.body.classList.add('shake');
+        
+        // Multiple flashes
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const flash = document.createElement('div');
+            flash.className = 'flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 500);
+          }, i * 300);
+        }
+        
+        setTimeout(() => {
+          // Skift knappetekst
+          this.textContent = "🔥 ØKONOMIEN BRENNER!";
+          this.style.background = '#FF4500';
+          
+          // MASSIV EKSPLOSJON - 500 partikler!
+          for (let i = 0; i < 500; i++) {
+            setTimeout(() => {
+              createFireParticle();
+            }, i * 8);
+          }
+          
+          // Ekstra store ildkuler
+          for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+              createLargeFireball();
+            }, i * 100);
+          }
+          
+          // REALISTISK ILD SOM DEKKER HELE SKJERMEN
+          createRealisticFire();
+          
+          // Vis Bitcoin popup etter 3 sekunder
+          setTimeout(() => {
+            showBitcoinPopup();
+          }, 3000);
+        }, 500);
+      });
+      
+      function createRealisticFire() {
+        const fireOverlay = document.createElement('div');
+        fireOverlay.className = 'fire-overlay';
+        document.body.appendChild(fireOverlay);
+        
+        // Varmebølge effekt
+        const heatWave = document.createElement('div');
+        heatWave.className = 'heat-wave';
+        document.body.appendChild(heatWave);
+        setTimeout(() => heatWave.style.opacity = '1', 100);
+        
+        // Lag flammer fra bunnen - dekke hele bredden
+        const numFlames = Math.ceil(window.innerWidth / 60); // Tettere flammer
+        for (let i = 0; i < numFlames * 2; i++) {
+          setTimeout(() => {
+            const flame = document.createElement('div');
+            flame.className = Math.random() > 0.6 ? 'flame flame-large' : 'flame';
+            flame.style.left = (Math.random() * window.innerWidth) + 'px';
+            flame.style.animationDelay = (Math.random() * 0.3) + 's';
+            
+            // Variere høyde for mer kaotisk utseende
+            if (flame.classList.contains('flame-large')) {
+              flame.style.height = (250 + Math.random() * 200) + 'px';
+            } else {
+              flame.style.height = (150 + Math.random() * 150) + 'px';
+            }
+            
+            fireOverlay.appendChild(flame);
+            
+            // Fjern etter animasjon
+            setTimeout(() => flame.remove(), 3000);
+          }, i * 50);
+        }
+        
+        // Lag glør/embers
+        for (let i = 0; i < 200; i++) {
+          setTimeout(() => {
+            const ember = document.createElement('div');
+            ember.className = 'ember';
+            ember.style.left = (Math.random() * window.innerWidth) + 'px';
+            ember.style.bottom = '0px';
+            ember.style.setProperty('--drift', (Math.random() * 200 - 100) + 'px');
+            ember.style.animationDelay = (Math.random() * 0.5) + 's';
+            ember.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+            
+            fireOverlay.appendChild(ember);
+            
+            setTimeout(() => ember.remove(), 3000);
+          }, i * 15);
+        }
+        
+        // Lag røyk
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke';
+            smoke.style.left = (Math.random() * window.innerWidth) + 'px';
+            smoke.style.bottom = '50px';
+            smoke.style.animationDelay = (Math.random() * 0.5) + 's';
+            
+            fireOverlay.appendChild(smoke);
+            
+            setTimeout(() => smoke.remove(), 4000);
+          }, i * 100);
+        }
+        
+        // Fjern overlay etter animasjon
+        setTimeout(() => {
+          fireOverlay.style.transition = 'opacity 1s';
+          fireOverlay.style.opacity = '0';
+          heatWave.style.transition = 'opacity 1s';
+          heatWave.style.opacity = '0';
+          setTimeout(() => {
+            fireOverlay.remove();
+            heatWave.remove();
+          }, 1000);
+        }, 4000);
+      }
+      
+      function createLargeFireball() {
+        const fireball = document.createElement('div');
+        fireball.className = 'fire-particle';
+        
+        // Store ildkuler
+        const size = 60 + Math.random() * 100;
+        fireball.style.width = size + 'px';
+        fireball.style.height = size + 'px';
+        
+        // Gradient farger for mer realistisk ild
+        const colors = [
+          'radial-gradient(circle, #FFD700 0%, #FF8C00 50%, #FF4500 100%)',
+          'radial-gradient(circle, #FFA500 0%, #FF6347 50%, #DC143C 100%)',
+          'radial-gradient(circle, #FFFF00 0%, #FF4500 50%, #8B0000 100%)'
+        ];
+        fireball.style.background = colors[Math.floor(Math.random() * colors.length)];
+        fireball.style.boxShadow = '0 0 40px rgba(255, 69, 0, 0.8)';
+        
+        // Start fra senter
+        const startX = window.innerWidth / 2;
+        const startY = window.innerHeight / 2;
+        fireball.style.left = startX + 'px';
+        fireball.style.top = startY + 'px';
+        
+        // Tilfeldig retning med større distanse
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 400 + Math.random() * 800;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        
+        fireball.style.setProperty('--tx', tx + 'px');
+        fireball.style.setProperty('--ty', ty + 'px');
+        
+        document.body.appendChild(fireball);
+        
+        fireball.style.animation = `explode ${1.5 + Math.random() * 1}s ease-out forwards`;
+        
+        setTimeout(() => {
+          fireball.remove();
+        }, 2500);
+      }
+      
+      function showBitcoinPopup() {
+        const overlay = document.createElement('div');
+        overlay.className = 'popup-overlay';
+        overlay.innerHTML = `
+          <div class="popup">
+            <div class="popup-icon">₿🔥</div>
+            <h2>Gratulerer!</h2>
+            <p>Din Bitcoin er nå borte.</p>
+            <p style="font-size: 0.95rem; color: #666; margin-top: 1.5rem;">
+              Takket være Kens utrettelige arbeid i Norges Bank,<br>
+              har inflasjonen spist opp verdien din.
+            </p>
+            <button class="popup-btn" onclick="this.parentElement.parentElement.remove()">😭 Takk, Ken</button>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+      }
+      
+      function createFireParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'fire-particle';
+        
+        // Tilfeldige farger (oransje/rød/gul)
+        const colors = ['#FF4500', '#FF6347', '#FFD700', '#FF8C00', '#DC143C'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Start fra senter av skjermen
+        const startX = window.innerWidth / 2;
+        const startY = window.innerHeight / 2;
+        particle.style.left = startX + 'px';
+        particle.style.top = startY + 'px';
+        
+        // Tilfeldig retning og distanse
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 200 + Math.random() * 500;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        
+        particle.style.setProperty('--tx', tx + 'px');
+        particle.style.setProperty('--ty', ty + 'px');
+        
+        // Tilfeldig størrelse
+        const size = 10 + Math.random() * 30;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        
+        document.body.appendChild(particle);
+        
+        // Animer
+        particle.style.animation = `explode ${0.8 + Math.random() * 0.7}s ease-out forwards`;
+        
+        // Fjern etter animasjon
+        setTimeout(() => {
+          particle.remove();
+        }, 1500);
+      }
+    });
+  </script>
+
+</body>
+</html>
