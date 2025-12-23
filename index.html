@@ -34,7 +34,7 @@
       line-height: 1.6;
       overflow-x: hidden;
       position: relative;
-      padding: 0 10px 0px 10px;
+      padding: 0;
     }
 
     /* FLYVENDE KEN-BILDE — SIRKEL + ANIMASJON */
@@ -56,10 +56,9 @@
     }
 
     .ken-flyer-text {
-      position: fixed;
-      top: 90px;
-      left: 50%;
-      transform: translateX(-50%);
+      position: absolute;
+      top: 85px;
+      right: 0;
       background: #FF4500;
       color: white;
       padding: 8px 16px;
@@ -71,9 +70,12 @@
       pointer-events: none;
       display: none;
       z-index: 1000;
-      max-width: calc(100vw - 16px);
-      overflow: hidden;
-      text-overflow: ellipsis;
+      width: max-content;
+    }
+
+    .ken-flyer-container:nth-child(1) .ken-flyer-text {
+      right: auto;
+      left: 0;
     }
 
     .ken-flyer-container.show-text .ken-flyer-text {
@@ -107,27 +109,27 @@
     @keyframes float-diagonal {
       0% { 
         top: 20px; 
-        right: 20px; 
+        left: 20px; 
         transform: rotate(0deg) scale(0.8);
       }
       25% { 
         top: 25%; 
-        right: 75%; 
+        left: 75%; 
         transform: rotate(90deg) scale(1);
       }
       50% { 
         top: 50%; 
-        right: 50%; 
+        left: 50%; 
         transform: rotate(180deg) scale(1.1);
       }
       75% { 
         top: 75%; 
-        right: 25%; 
+        left: 25%; 
         transform: rotate(270deg) scale(1);
       }
       100% { 
         top: calc(100% - 150px); 
-        right: calc(100% - 150px); 
+        left: calc(100% - 150px); 
         transform: rotate(360deg) scale(0.8);
       }
     }
@@ -135,17 +137,17 @@
     @keyframes float-horizontal {
       0% { 
         top: 15%; 
-        left: -100px; 
+        right: -100px; 
         transform: rotate(-20deg);
       }
       50% { 
         top: 15%; 
-        left: calc(100% + 100px); 
+        right: calc(100% + 100px); 
         transform: rotate(20deg);
       }
       100% { 
         top: 15%; 
-        left: -100px; 
+        right: -100px; 
         transform: rotate(-20deg);
       }
     }
@@ -153,17 +155,17 @@
     @keyframes float-vertical {
       0% { 
         top: -100px; 
-        left: 70%; 
+        right: 30%; 
         transform: rotate(0deg);
       }
       50% { 
         top: calc(100% + 100px); 
-        left: 70%; 
+        right: 30%; 
         transform: rotate(180deg);
       }
       100% { 
         top: -100px; 
-        left: 70%; 
+        right: 30%; 
         transform: rotate(360deg);
       }
     }
@@ -171,45 +173,45 @@
     @keyframes float-circle {
       0% { 
         top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%) rotate(0deg) translateX(200px) rotate(0deg);
+        right: 50%; 
+        transform: translate(50%, -50%) rotate(0deg) translateX(-200px) rotate(0deg);
       }
       100% { 
         top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%) rotate(360deg) translateX(200px) rotate(-360deg);
+        right: 50%; 
+        transform: translate(50%, -50%) rotate(360deg) translateX(-200px) rotate(-360deg);
       }
     }
 
     @keyframes float-zigzag {
       0% { 
         top: -100px; 
-        left: 20%; 
+        right: 80%; 
         transform: rotate(0deg);
       }
       20% { 
         top: 20%; 
-        left: 80%; 
+        right: 20%; 
         transform: rotate(72deg);
       }
       40% { 
         top: 40%; 
-        left: 10%; 
+        right: 90%; 
         transform: rotate(144deg);
       }
       60% { 
         top: 60%; 
-        left: 90%; 
+        right: 10%; 
         transform: rotate(216deg);
       }
       80% { 
         top: 80%; 
-        left: 30%; 
+        right: 70%; 
         transform: rotate(288deg);
       }
       100% { 
         top: 100%; 
-        left: 70%; 
+        right: 30%; 
         transform: rotate(360deg);
       }
     }
@@ -221,6 +223,9 @@
       text-align: center;
       margin-bottom: 1.5rem;
       position: relative;
+      width: 100vw;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     header h1 {
@@ -385,6 +390,9 @@
       .ken-flyer {
         width: 60px;
         height: 60px;
+      }
+      .ken-flyer-text {
+        top: 65px;
       }
     }
 
@@ -783,7 +791,7 @@
     <p class="subtitle">Hvorfor Ken Siva Lie er et dårlig menneske</p>
   </header>
 
-  <div class="container">
+  <div class="container" style="padding: 0 10px;">
 
     <section class="fade">
       <div class="card">
