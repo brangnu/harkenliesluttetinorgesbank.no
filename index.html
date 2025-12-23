@@ -47,36 +47,67 @@
       box-shadow: 0 0 20px rgba(0, 21, 56, 0.3);
       z-index: 999;
       opacity: 0.9;
+      cursor: pointer;
     }
 
-    .ken-flyer:nth-child(1) {
+    .ken-flyer-container {
+      position: fixed;
+      z-index: 999;
+    }
+
+    .ken-flyer-text {
+      position: fixed;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #FF4500;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(255, 69, 0, 0.4);
+      pointer-events: none;
+      display: none;
+      z-index: 1000;
+      max-width: calc(100vw - 16px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ken-flyer-container.show-text .ken-flyer-text {
+      display: block;
+    }
+
+    .ken-flyer-container:nth-child(1) {
       animation: float-diagonal 6s ease-in-out infinite;
     }
 
-    .ken-flyer:nth-child(2) {
+    .ken-flyer-container:nth-child(2) {
       animation: float-horizontal 8s ease-in-out infinite;
       animation-delay: 1s;
     }
 
-    .ken-flyer:nth-child(3) {
+    .ken-flyer-container:nth-child(3) {
       animation: float-vertical 7s ease-in-out infinite;
       animation-delay: 2s;
     }
 
-    .ken-flyer:nth-child(4) {
+    .ken-flyer-container:nth-child(4) {
       animation: float-circle 10s linear infinite;
       animation-delay: 0.5s;
     }
 
-    .ken-flyer:nth-child(5) {
+    .ken-flyer-container:nth-child(5) {
       animation: float-zigzag 9s ease-in-out infinite;
       animation-delay: 1.5s;
     }
 
     @keyframes float-diagonal {
       0% { 
-        top: -100px; 
-        right: -100px; 
+        top: 20px; 
+        right: 20px; 
         transform: rotate(0deg) scale(0.8);
       }
       25% { 
@@ -95,8 +126,8 @@
         transform: rotate(270deg) scale(1);
       }
       100% { 
-        top: 100%; 
-        right: 100%; 
+        top: calc(100% - 150px); 
+        right: calc(100% - 150px); 
         transform: rotate(360deg) scale(0.8);
       }
     }
@@ -726,11 +757,26 @@
   </audio>
 
   <!-- FLYVENDE KEN — FLERE VARIANTER MED ULIKE ANIMASJONER -->
-  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
-  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
-  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
-  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
-  <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+  <div class="ken-flyer-container">
+    <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+    <div class="ken-flyer-text">Want more inflation??</div>
+  </div>
+  <div class="ken-flyer-container">
+    <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+    <div class="ken-flyer-text">Want more inflation??</div>
+  </div>
+  <div class="ken-flyer-container">
+    <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+    <div class="ken-flyer-text">Want more inflation??</div>
+  </div>
+  <div class="ken-flyer-container">
+    <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+    <div class="ken-flyer-text">Want more inflation??</div>
+  </div>
+  <div class="ken-flyer-container">
+    <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
+    <div class="ken-flyer-text">Want more inflation??</div>
+  </div>
 
   <header>
     <h1>KEN — DEN STILLE ØDELEGGEREN</h1>
@@ -871,6 +917,39 @@
       const playButton = document.getElementById('playButton');
       
       jingleBells.volume = 0.5;
+
+      // Add click handlers to flying Ken images
+      document.querySelectorAll('.ken-flyer').forEach(img => {
+        img.addEventListener('click', function() {
+          const container = this.parentElement;
+          const textElement = container.querySelector('.ken-flyer-text');
+          
+          container.classList.toggle('show-text');
+          
+          // Adjust text position to stay within viewport
+          if (container.classList.contains('show-text')) {
+            const containerRect = container.getBoundingClientRect();
+            const textWidth = textElement.offsetWidth;
+            const viewportWidth = window.innerWidth;
+            
+            // Calculate ideal center position
+            let leftPosition = 50;
+            
+            // Check if text would go off-screen left
+            if (containerRect.left - textWidth/2 < 8) {
+              leftPosition = Math.max(8, containerRect.left) + textWidth/2;
+              leftPosition = (leftPosition / viewportWidth) * 100;
+            }
+            // Check if text would go off-screen right  
+            else if (containerRect.left + textWidth/2 > viewportWidth - 8) {
+              leftPosition = Math.min(viewportWidth - 8, containerRect.right) - textWidth/2;
+              leftPosition = (leftPosition / viewportWidth) * 100;
+            }
+            
+            textElement.style.left = leftPosition + '%';
+          }
+        });
+      });
       
       // Play button click handler
       playButton.addEventListener('click', () => {
