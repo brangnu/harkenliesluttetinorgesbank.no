@@ -653,9 +653,77 @@
         opacity: 0;
       }
     }
+
+    /* WELCOME POPUP */
+    .welcome-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 21, 56, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20000;
+    }
+
+    .welcome-popup {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0, 21, 56, 0.8);
+    }
+
+    .welcome-popup h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .welcome-popup p {
+      color: var(--text);
+      font-size: 1rem;
+      margin: 0 0 2rem 0;
+    }
+
+    .play-button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 12px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(193, 39, 45, 0.3);
+    }
+
+    .play-button:hover {
+      background: #A01F24;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(193, 39, 45, 0.4);
+    }
   </style>
 </head>
 <body>
+
+  <!-- WELCOME POPUP -->
+  <div id="welcomeOverlay" class="welcome-overlay">
+    <div class="welcome-popup">
+      <h2>🎄 Velkommen! 🎄</h2>
+      <p>Klikk for å starte musikken og oppleve den fulle opplevelsen.</p>
+      <button id="playButton" class="play-button">▶️ Start</button>
+    </div>
+  </div>
+
+  <!-- JINGLE BELLS AUDIO -->
+  <audio id="jingleBells" loop preload="auto">
+    <source src="jingle-bell-thai.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- FLYVENDE KEN — FLERE VARIANTER MED ULIKE ANIMASJONER -->
   <img src="kens-hode.png" alt="Ken – Den stille ødeleggeren" class="ken-flyer">
@@ -798,6 +866,29 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const jingleBells = document.getElementById('jingleBells');
+      const welcomeOverlay = document.getElementById('welcomeOverlay');
+      const playButton = document.getElementById('playButton');
+      
+      jingleBells.volume = 0.5;
+      
+      // Play button click handler
+      playButton.addEventListener('click', () => {
+        // Start the music
+        jingleBells.play().then(() => {
+          console.log('Audio playing!');
+        }).catch(err => {
+          console.log('Error:', err);
+        });
+        
+        // Close the popup with fade out
+        welcomeOverlay.style.transition = 'opacity 0.5s';
+        welcomeOverlay.style.opacity = '0';
+        setTimeout(() => {
+          welcomeOverlay.remove();
+        }, 500);
+      });
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
